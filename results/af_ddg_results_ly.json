@@ -1,0 +1,196 @@
+{
+  "model": "AF-\u0394\u0394G: HistGradientBoostingRegressor on 10 sequence descriptors + 6 AlphaFold DB features",
+  "features": [
+    "blosum62",
+    "d_hydropathy",
+    "d_volume_A3",
+    "abs_d_volume_A3",
+    "d_charge",
+    "d_helix_kcal",
+    "to_gly",
+    "from_gly",
+    "to_pro",
+    "from_pro",
+    "plddt",
+    "plddt_window",
+    "burial_cn10",
+    "rel_position",
+    "am_pathogenicity",
+    "am_position_mean"
+  ],
+  "hyperparameters": {
+    "learning_rate": 0.03,
+    "max_leaf_nodes": 7,
+    "min_samples_leaf": 20
+  },
+  "seed": 7440,
+  "train_set": "S2648 (normalised by data_pipeline_ly.py)",
+  "test_set": "S669 (669 direct variants)",
+  "pipeline_content_sha256": "19494dbf4f8aa86ff43a90e6e016296c1c86ea41502199ccc6a3f827c61db448",
+  "n_test_with_alphafold_features": 620,
+  "scores": {
+    "Null (S2648 mean)": {
+      "rmse_kcal_mol": 1.622546316626526,
+      "mae_kcal_mol": 1.2255597410573569,
+      "bias_kcal_mol": -0.03068987621873301,
+      "pearson_r": 1.964110598536478e-17,
+      "spearman_rho": NaN,
+      "n": 669,
+      "rmse_in_RT": 2.738544358159876,
+      "rmse_kJ_mol": 6.788733788765385
+    },
+    "PhysChem-Ridge baseline (Week 8)": {
+      "rmse_kcal_mol": 1.5380900636053745,
+      "mae_kcal_mol": 1.1329678318508707,
+      "bias_kcal_mol": -0.02380378039161273,
+      "pearson_r": 0.320303424767423,
+      "spearman_rho": 0.33044056064941835,
+      "n": 669,
+      "rmse_in_RT": 2.5959985381408384,
+      "rmse_kJ_mol": 6.435368826124887
+    },
+    "HGB, sequence only (control)": {
+      "rmse_kcal_mol": 1.5586285187481959,
+      "mae_kcal_mol": 1.1228758036659285,
+      "bias_kcal_mol": -0.023892172304690845,
+      "pearson_r": 0.31598913446060145,
+      "spearman_rho": 0.3500257569820108,
+      "n": 669,
+      "rmse_in_RT": 2.6306634779828233,
+      "rmse_kJ_mol": 6.521301722442452
+    },
+    "AF-\u0394\u0394G (this week)": {
+      "rmse_kcal_mol": 1.568813298731598,
+      "mae_kcal_mol": 1.13139946799967,
+      "bias_kcal_mol": 0.14051589637130302,
+      "pearson_r": 0.334000618405272,
+      "spearman_rho": 0.3612012527930815,
+      "n": 669,
+      "rmse_in_RT": 2.6478534167086623,
+      "rmse_kJ_mol": 6.563914841893006
+    }
+  },
+  "rmse_ci95": {
+    "Null (S2648 mean)": {
+      "value": 1.622546316626526,
+      "se": 0.1253759666166777,
+      "ci_low": 1.4058099493269827,
+      "ci_high": 1.88763007023478,
+      "n_boot": 2000
+    },
+    "PhysChem-Ridge baseline (Week 8)": {
+      "value": 1.5380900636053745,
+      "se": 0.15124168719822598,
+      "ci_low": 1.2721991759780904,
+      "ci_high": 1.8650401338804357,
+      "n_boot": 2000
+    },
+    "HGB, sequence only (control)": {
+      "value": 1.5586285187481959,
+      "se": 0.15653374032882725,
+      "ci_low": 1.282720605386171,
+      "ci_high": 1.8942222070971106,
+      "n_boot": 2000
+    },
+    "AF-\u0394\u0394G (this week)": {
+      "value": 1.568813298731598,
+      "se": 0.16887826743018758,
+      "ci_low": 1.2720443208536318,
+      "ci_high": 1.921183775952891,
+      "n_boot": 2000
+    }
+  },
+  "delta_rmse_af_minus_baseline": {
+    "delta": 0.030723235126223436,
+    "ci_low": -0.05270218561386643,
+    "ci_high": 0.09910261737092292,
+    "p_not_better": 0.73
+  },
+  "delta_rmse_af_minus_baseline_af_subset": {
+    "delta": 0.03314162821123712,
+    "ci_low": -0.059686705730322136,
+    "ci_high": 0.10848186279596608,
+    "p_not_better": 0.7415
+  },
+  "delta_rmse_af_minus_sequence_control": {
+    "delta": 0.01018477998340206,
+    "ci_low": -0.1078566449146368,
+    "ci_high": 0.10144173172335147,
+    "p_not_better": 0.528
+  },
+  "verdict": "RMSE = 1.569 kcal/mol vs threshold 1.36 kcal/mol (RT ln10 at 298.15 K): DOES NOT MEET the success threshold; improvement over baseline is NOT significant",
+  "rmse_by_burial_class": {
+    "exposed": {
+      "n": 191.0,
+      "baseline RMSE": 1.3968573646854028,
+      "AF-\u0394\u0394G RMSE": 1.3510088558968547
+    },
+    "intermediate": {
+      "n": 258.0,
+      "baseline RMSE": 1.571152675073751,
+      "AF-\u0394\u0394G RMSE": 1.6522934173219344
+    },
+    "buried": {
+      "n": 171.0,
+      "baseline RMSE": 1.6325486619867609,
+      "AF-\u0394\u0394G RMSE": 1.6687587130182908
+    },
+    "no model": {
+      "n": 49.0,
+      "baseline RMSE": 1.5475855948750066,
+      "AF-\u0394\u0394G RMSE": 1.5475855948750066
+    }
+  },
+  "rmse_by_plddt_band": {
+    "very low (<50)": {
+      "n": 0,
+      "baseline RMSE": NaN,
+      "AF-\u0394\u0394G RMSE": NaN
+    },
+    "low (50-70)": {
+      "n": 6,
+      "baseline RMSE": 0.9063705117020893,
+      "AF-\u0394\u0394G RMSE": 1.0639294087902345
+    },
+    "confident (70-90)": {
+      "n": 187,
+      "baseline RMSE": 1.2301174586504051,
+      "AF-\u0394\u0394G RMSE": 1.2801715238783766
+    },
+    "very high (>90)": {
+      "n": 427,
+      "baseline RMSE": 1.6605464238793113,
+      "AF-\u0394\u0394G RMSE": 1.6874766415978049
+    }
+  },
+  "harness": {
+    "Null (S2648 mean)": {
+      "pass rate [all]": 0.6711509715994021,
+      "pass rate [typical] (n=428)": 0.9485981308411215,
+      "pass rate [edge] (n=241)": 0.17842323651452283,
+      "worst |error| (kcal/mol)": 7.916638972809667,
+      "worst item": "P54178-W55A"
+    },
+    "PhysChem-Ridge baseline (Week 8)": {
+      "pass rate [all]": 0.7130044843049327,
+      "pass rate [typical] (n=428)": 0.9205607476635514,
+      "pass rate [edge] (n=241)": 0.34439834024896265,
+      "worst |error| (kcal/mol)": 6.788882475428919,
+      "worst item": "P54178-W55A"
+    },
+    "HGB, sequence only (control)": {
+      "pass rate [all]": 0.7070254110612855,
+      "pass rate [typical] (n=428)": 0.8878504672897196,
+      "pass rate [edge] (n=241)": 0.38589211618257263,
+      "worst |error| (kcal/mol)": 6.724547440218014,
+      "worst item": "P54178-W55A"
+    },
+    "AF-\u0394\u0394G (this week)": {
+      "pass rate [all]": 0.6905829596412556,
+      "pass rate [typical] (n=428)": 0.8598130841121495,
+      "pass rate [edge] (n=241)": 0.3900414937759336,
+      "worst |error| (kcal/mol)": 6.584009016978432,
+      "worst item": "O73951-E53A"
+    }
+  }
+}

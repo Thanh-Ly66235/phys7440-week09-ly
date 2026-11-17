@@ -1,0 +1,188 @@
+{
+  "claim": "My pipeline (Claude + my afdb-sequence-mcp server, extended with the AF-ddG model) reports the AlphaFold DB pLDDT and AlphaMissense score at a variant site exactly as stored in AlphaFold DB, and predicts the variant's folding free-energy change to within RT ln 10 = 1.36 kcal/mol of experiment.",
+  "_notes": [
+    "Thanh Ly, PHYS 7440, Meeting 1 ground-truth set (copied from ground_truth_template.json), used as the seed of the Assignment 8 test dataset.",
+    "Reference values were extracted by script from the cited records, never typed from memory or from an LLM: AlphaFold DB values from the API responses recorded on 2026-10-26 (Assignment 7 fixtures), ddG values from the S669 file.",
+    "kind: 'numeric' (compared in physical units via pint) or 'exact' (string match, case-insensitive). pLDDT and AlphaMissense scores are dimensionless (unit '').",
+    "tolerance: pLDDT +/-0.05 and AlphaMissense +/-0.0005 accept an answer rounded to one decimal place fewer than stored (pLDDT is stored to 0.01, AlphaMissense to 0.0001); ddG items use the domain rule in eval_harness.within_tolerance (|error| <= RT ln 10 = 1.36 kcal/mol, and no sign flip when |ddG_ref| >= 1 kcal/mol).",
+    "regime: 6 'typical' items the current pipeline should answer; 4 'edge' items (numbering ambiguity, a two-call derived quantity, and two ddG items, one asked in kJ/mol).",
+    "tool / arguments / field are used by --mode tool; 'field' is a dotted path into the server's {ok, data, ...} envelope. Edge items have no tool on purpose: they test the agent.",
+    "ddG items carry s669_protein / s669_mutation so baseline_ly.ipynb can check that they are S669 entries (the ground-truth set is the seed of the test dataset)."
+  ],
+  "items": [
+    {
+      "id": "hbb-mean-plddt",
+      "question": "What mean pLDDT does AlphaFold DB report for its model of human hemoglobin subunit beta (UniProt P68871)?",
+      "kind": "numeric",
+      "value": 97.19,
+      "unit": "",
+      "sigma": null,
+      "tolerance": {
+        "abs": 0.05
+      },
+      "regime": "typical",
+      "source": "AlphaFold DB v6 record: https://alphafold.ebi.ac.uk/api/prediction/P68871 (globalMetricValue, entry AF-P68871-F1), retrieved 2026-10-26",
+      "tool": "compare_sequence_to_alphafold",
+      "arguments": {
+        "uniprot_accession": "P68871"
+      },
+      "field": "data.model.afdb_reported_mean_plddt"
+    },
+    {
+      "id": "hbb-e7v-plddt",
+      "question": "What is the AlphaFold DB pLDDT of residue 7 of human hemoglobin subunit beta (UniProt P68871), the site of the E7V substitution in UniProt numbering?",
+      "kind": "numeric",
+      "value": 96.56,
+      "unit": "",
+      "sigma": null,
+      "tolerance": {
+        "abs": 0.05
+      },
+      "regime": "typical",
+      "source": "AlphaFold DB v6 record: https://alphafold.ebi.ac.uk/files/AF-P68871-F1-confidence_v6.json (confidenceScore, residue 7), retrieved 2026-10-26",
+      "tool": "compare_sequence_to_alphafold",
+      "arguments": {
+        "uniprot_accession": "P68871",
+        "query_sequence": ">NM_000518.5 HBB CDS with c.20A>T (GAG>GTG, p.Glu7Val; HbS 'E6V' in mature-chain numbering), sickle-cell allele\nATGGTGCATCTGACTCCTGTGGAGAAGTCTGCCGTTACTGCCCTGTGGGGCAAGGTGAACGTGGATGAAG\nTTGGTGGTGAGGCCCTGGGCAGGCTGCTGGTGGTCTACCCTTGGACCCAGAGGTTCTTTGAGTCCTTTGG\nGGATCTGTCCACTCCTGATGCTGTTATGGGCAACCCTAAGGTGAAGGCTCATGGCAAGAAAGTGCTCGGT\nGCCTTTAGTGATGGCCTGGCTCACCTGGACAACCTCAAGGGCACCTTTGCCACACTGAGTGAGCTGCACT\nGTGACAAGCTGCACGTGGATCCTGAGAACTTCAGGCTCCTGGGCAACGTGCTGGTCTGTGTGCTGGCCCA\nTCACTTTGGCAAAGAATTCACCCCACCAGTGCAGGCTGCCTATCAGAAAGTGGTGGCTGGTGTGGCTAAT\nGCCCTGGCCCACAAGTATCACTAA",
+        "query_type": "dna"
+      },
+      "field": "data.comparison.substitutions.0.plddt"
+    },
+    {
+      "id": "hbb-e7v-alphamissense",
+      "question": "What is the AlphaMissense pathogenicity score of the E7V substitution in human hemoglobin subunit beta (UniProt P68871)?",
+      "kind": "numeric",
+      "value": 0.2229,
+      "unit": "",
+      "sigma": null,
+      "tolerance": {
+        "abs": 0.0005
+      },
+      "regime": "typical",
+      "source": "AlphaFold DB v6 record: https://alphafold.ebi.ac.uk/files/AF-P68871-F1-aa-substitutions.csv (am_pathogenicity, E7V), retrieved 2026-10-26",
+      "tool": "compare_sequence_to_alphafold",
+      "arguments": {
+        "uniprot_accession": "P68871",
+        "query_sequence": ">NM_000518.5 HBB CDS with c.20A>T (GAG>GTG, p.Glu7Val; HbS 'E6V' in mature-chain numbering), sickle-cell allele\nATGGTGCATCTGACTCCTGTGGAGAAGTCTGCCGTTACTGCCCTGTGGGGCAAGGTGAACGTGGATGAAG\nTTGGTGGTGAGGCCCTGGGCAGGCTGCTGGTGGTCTACCCTTGGACCCAGAGGTTCTTTGAGTCCTTTGG\nGGATCTGTCCACTCCTGATGCTGTTATGGGCAACCCTAAGGTGAAGGCTCATGGCAAGAAAGTGCTCGGT\nGCCTTTAGTGATGGCCTGGCTCACCTGGACAACCTCAAGGGCACCTTTGCCACACTGAGTGAGCTGCACT\nGTGACAAGCTGCACGTGGATCCTGAGAACTTCAGGCTCCTGGGCAACGTGCTGGTCTGTGTGCTGGCCCA\nTCACTTTGGCAAAGAATTCACCCCACCAGTGCAGGCTGCCTATCAGAAAGTGGTGGCTGGTGTGGCTAAT\nGCCCTGGCCCACAAGTATCACTAA",
+        "query_type": "dna"
+      },
+      "field": "data.comparison.substitutions.0.alphamissense_pathogenicity"
+    },
+    {
+      "id": "tp53-r175h-plddt",
+      "question": "What is the AlphaFold DB pLDDT of residue 175 of human cellular tumor antigen p53 (UniProt P04637), the site of the R175H hotspot mutation?",
+      "kind": "numeric",
+      "value": 96.62,
+      "unit": "",
+      "sigma": null,
+      "tolerance": {
+        "abs": 0.05
+      },
+      "regime": "typical",
+      "source": "AlphaFold DB v6 record: https://alphafold.ebi.ac.uk/files/AF-P04637-F1-confidence_v6.json (confidenceScore, residue 175), retrieved 2026-10-26",
+      "tool": "compare_sequence_to_alphafold",
+      "arguments": {
+        "uniprot_accession": "P04637",
+        "query_sequence": ">NM_000546.6 TP53 CDS with c.524G>A (CGC>CAC, p.Arg175His), common cancer hotspot\nATGGAGGAGCCGCAGTCAGATCCTAGCGTCGAGCCCCCTCTGAGTCAGGAAACATTTTCAGACCTATGGA\nAACTACTTCCTGAAAACAACGTTCTGTCCCCCTTGCCGTCCCAAGCAATGGATGATTTGATGCTGTCCCC\nGGACGATATTGAACAATGGTTCACTGAAGACCCAGGTCCAGATGAAGCTCCCAGAATGCCAGAGGCTGCT\nCCCCCCGTGGCCCCTGCACCAGCAGCTCCTACACCGGCGGCCCCTGCACCAGCCCCCTCCTGGCCCCTGT\nCATCTTCTGTCCCTTCCCAGAAAACCTACCAGGGCAGCTACGGTTTCCGTCTGGGCTTCTTGCATTCTGG\nGACAGCCAAGTCTGTGACTTGCACGTACTCCCCTGCCCTCAACAAGATGTTTTGCCAACTGGCCAAGACC\nTGCCCTGTGCAGCTGTGGGTTGATTCCACACCCCCGCCCGGCACCCGCGTCCGCGCCATGGCCATCTACA\nAGCAGTCACAGCACATGACGGAGGTTGTGAGGCACTGCCCCCACCATGAGCGCTGCTCAGATAGCGATGG\nTCTGGCCCCTCCTCAGCATCTTATCCGAGTGGAAGGAAATTTGCGTGTGGAGTATTTGGATGACAGAAAC\nACTTTTCGACATAGTGTGGTGGTGCCCTATGAGCCGCCTGAGGTTGGCTCTGACTGTACCACCATCCACT\nACAACTACATGTGTAACAGTTCCTGCATGGGCGGCATGAACCGGAGGCCCATCCTCACCATCATCACACT\nGGAAGACTCCAGTGGTAATCTACTGGGACGGAACAGCTTTGAGGTGCGTGTTTGTGCCTGTCCTGGGAGA\nGACCGGCGCACAGAGGAAGAGAATCTCCGCAAGAAAGGGGAGCCTCACCACGAGCTGCCCCCAGGGAGCA\nCTAAGCGAGCACTGCCCAACAACACCAGCTCCTCTCCCCAGCCAAAGAAGAAACCACTGGATGGAGAATA\nTTTCACCCTTCAGATCCGTGGGCGTGAGCGCTTCGAGATGTTCCGAGAGCTGAATGAGGCCTTGGAACTC\nAAGGATGCCCAGGCTGGGAAGGAGCCAGGGGGGAGCAGGGCTCACTCCAGCCACCTGAAGTCCAAAAAGG\nGTCAGTCTACCTCCCGCCATAAAAAACTCATGTTCAAGACAGAAGGGCCTGACTCAGACTGA",
+        "query_type": "dna"
+      },
+      "field": "data.comparison.substitutions.0.plddt"
+    },
+    {
+      "id": "tp53-r175h-alphamissense",
+      "question": "What is the AlphaMissense pathogenicity score of the R175H substitution in human p53 (UniProt P04637)?",
+      "kind": "numeric",
+      "value": 0.9857,
+      "unit": "",
+      "sigma": null,
+      "tolerance": {
+        "abs": 0.0005
+      },
+      "regime": "typical",
+      "source": "AlphaFold DB v6 record: https://alphafold.ebi.ac.uk/files/AF-P04637-F1-aa-substitutions.csv (am_pathogenicity, R175H), retrieved 2026-10-26",
+      "tool": "compare_sequence_to_alphafold",
+      "arguments": {
+        "uniprot_accession": "P04637",
+        "query_sequence": ">NM_000546.6 TP53 CDS with c.524G>A (CGC>CAC, p.Arg175His), common cancer hotspot\nATGGAGGAGCCGCAGTCAGATCCTAGCGTCGAGCCCCCTCTGAGTCAGGAAACATTTTCAGACCTATGGA\nAACTACTTCCTGAAAACAACGTTCTGTCCCCCTTGCCGTCCCAAGCAATGGATGATTTGATGCTGTCCCC\nGGACGATATTGAACAATGGTTCACTGAAGACCCAGGTCCAGATGAAGCTCCCAGAATGCCAGAGGCTGCT\nCCCCCCGTGGCCCCTGCACCAGCAGCTCCTACACCGGCGGCCCCTGCACCAGCCCCCTCCTGGCCCCTGT\nCATCTTCTGTCCCTTCCCAGAAAACCTACCAGGGCAGCTACGGTTTCCGTCTGGGCTTCTTGCATTCTGG\nGACAGCCAAGTCTGTGACTTGCACGTACTCCCCTGCCCTCAACAAGATGTTTTGCCAACTGGCCAAGACC\nTGCCCTGTGCAGCTGTGGGTTGATTCCACACCCCCGCCCGGCACCCGCGTCCGCGCCATGGCCATCTACA\nAGCAGTCACAGCACATGACGGAGGTTGTGAGGCACTGCCCCCACCATGAGCGCTGCTCAGATAGCGATGG\nTCTGGCCCCTCCTCAGCATCTTATCCGAGTGGAAGGAAATTTGCGTGTGGAGTATTTGGATGACAGAAAC\nACTTTTCGACATAGTGTGGTGGTGCCCTATGAGCCGCCTGAGGTTGGCTCTGACTGTACCACCATCCACT\nACAACTACATGTGTAACAGTTCCTGCATGGGCGGCATGAACCGGAGGCCCATCCTCACCATCATCACACT\nGGAAGACTCCAGTGGTAATCTACTGGGACGGAACAGCTTTGAGGTGCGTGTTTGTGCCTGTCCTGGGAGA\nGACCGGCGCACAGAGGAAGAGAATCTCCGCAAGAAAGGGGAGCCTCACCACGAGCTGCCCCCAGGGAGCA\nCTAAGCGAGCACTGCCCAACAACACCAGCTCCTCTCCCCAGCCAAAGAAGAAACCACTGGATGGAGAATA\nTTTCACCCTTCAGATCCGTGGGCGTGAGCGCTTCGAGATGTTCCGAGAGCTGAATGAGGCCTTGGAACTC\nAAGGATGCCCAGGCTGGGAAGGAGCCAGGGGGGAGCAGGGCTCACTCCAGCCACCTGAAGTCCAAAAAGG\nGTCAGTCTACCTCCCGCCATAAAAAACTCATGTTCAAGACAGAAGGGCCTGACTCAGACTGA",
+        "query_type": "dna"
+      },
+      "field": "data.comparison.substitutions.0.alphamissense_pathogenicity"
+    },
+    {
+      "id": "hbb-dna-accession",
+      "question": "Which human UniProt accession has an AlphaFold DB model whose sequence is identical to the protein encoded by this coding sequence?\n\n>NM_000518.5 HBB coding sequence (CDS 51..494), Homo sapiens hemoglobin subunit beta, wild type\nATGGTGCATCTGACTCCTGAGGAGAAGTCTGCCGTTACTGCCCTGTGGGGCAAGGTGAACGTGGATGAAG\nTTGGTGGTGAGGCCCTGGGCAGGCTGCTGGTGGTCTACCCTTGGACCCAGAGGTTCTTTGAGTCCTTTGG\nGGATCTGTCCACTCCTGATGCTGTTATGGGCAACCCTAAGGTGAAGGCTCATGGCAAGAAAGTGCTCGGT\nGCCTTTAGTGATGGCCTGGCTCACCTGGACAACCTCAAGGGCACCTTTGCCACACTGAGTGAGCTGCACT\nGTGACAAGCTGCACGTGGATCCTGAGAACTTCAGGCTCCTGGGCAACGTGCTGGTCTGTGTGCTGGCCCA\nTCACTTTGGCAAAGAATTCACCCCACCAGTGCAGGCTGCCTATCAGAAAGTGGTGGCTGGTGTGGCTAAT\nGCCCTGGCCCACAAGTATCACTAA",
+      "kind": "exact",
+      "value": "P68871",
+      "regime": "typical",
+      "source": "AlphaFold DB sequence-summary API, MD5 209d686939d0b8d1ea089368150140e2 (lists AF-P68871-F1, human), retrieved 2026-10-26; CDS from NCBI RefSeq NM_000518.5",
+      "tool": "find_alphafold_models_for_dna",
+      "arguments": {
+        "dna_sequence": ">NM_000518.5 HBB coding sequence (CDS 51..494), Homo sapiens hemoglobin subunit beta, wild type\nATGGTGCATCTGACTCCTGAGGAGAAGTCTGCCGTTACTGCCCTGTGGGGCAAGGTGAACGTGGATGAAG\nTTGGTGGTGAGGCCCTGGGCAGGCTGCTGGTGGTCTACCCTTGGACCCAGAGGTTCTTTGAGTCCTTTGG\nGGATCTGTCCACTCCTGATGCTGTTATGGGCAACCCTAAGGTGAAGGCTCATGGCAAGAAAGTGCTCGGT\nGCCTTTAGTGATGGCCTGGCTCACCTGGACAACCTCAAGGGCACCTTTGCCACACTGAGTGAGCTGCACT\nGTGACAAGCTGCACGTGGATCCTGAGAACTTCAGGCTCCTGGGCAACGTGCTGGTCTGTGTGCTGGCCCA\nTCACTTTGGCAAAGAATTCACCCCACCAGTGCAGGCTGCCTATCAGAAAGTGGTGGCTGGTGTGGCTAAT\nGCCCTGGCCCACAAGTATCACTAA",
+        "taxon_id": 9606
+      },
+      "field": "data.best_match.uniprot_accession"
+    },
+    {
+      "id": "hbs-e6v-clinical-numbering",
+      "question": "Sickle-cell haemoglobin carries the beta-globin mutation usually written Glu6Val (E6V). What pLDDT does the AlphaFold DB model of human hemoglobin subunit beta assign to the mutated residue?",
+      "kind": "numeric",
+      "value": 96.56,
+      "unit": "",
+      "sigma": null,
+      "tolerance": {
+        "abs": 0.05
+      },
+      "regime": "edge",
+      "source": "AlphaFold DB v6 record: https://alphafold.ebi.ac.uk/files/AF-P68871-F1-confidence_v6.json, residue 7. 'E6V' is mature-chain numbering (initiator Met removed); the same residue is 7 in UniProt numbering. Residue 6 has pLDDT 94.94, so a numbering slip is detectable.",
+      "edge_reason": "ambiguous identifier (clinical vs UniProt residue numbering)"
+    },
+    {
+      "id": "tp53-dna-two-calls",
+      "question": "This coding sequence carries a single point mutation relative to the human reference protein. What is the AlphaFold DB pLDDT at the mutated residue?\n\n>NM_000546.6 TP53 CDS with c.524G>A (CGC>CAC, p.Arg175His), common cancer hotspot\nATGGAGGAGCCGCAGTCAGATCCTAGCGTCGAGCCCCCTCTGAGTCAGGAAACATTTTCAGACCTATGGA\nAACTACTTCCTGAAAACAACGTTCTGTCCCCCTTGCCGTCCCAAGCAATGGATGATTTGATGCTGTCCCC\nGGACGATATTGAACAATGGTTCACTGAAGACCCAGGTCCAGATGAAGCTCCCAGAATGCCAGAGGCTGCT\nCCCCCCGTGGCCCCTGCACCAGCAGCTCCTACACCGGCGGCCCCTGCACCAGCCCCCTCCTGGCCCCTGT\nCATCTTCTGTCCCTTCCCAGAAAACCTACCAGGGCAGCTACGGTTTCCGTCTGGGCTTCTTGCATTCTGG\nGACAGCCAAGTCTGTGACTTGCACGTACTCCCCTGCCCTCAACAAGATGTTTTGCCAACTGGCCAAGACC\nTGCCCTGTGCAGCTGTGGGTTGATTCCACACCCCCGCCCGGCACCCGCGTCCGCGCCATGGCCATCTACA\nAGCAGTCACAGCACATGACGGAGGTTGTGAGGCACTGCCCCCACCATGAGCGCTGCTCAGATAGCGATGG\nTCTGGCCCCTCCTCAGCATCTTATCCGAGTGGAAGGAAATTTGCGTGTGGAGTATTTGGATGACAGAAAC\nACTTTTCGACATAGTGTGGTGGTGCCCTATGAGCCGCCTGAGGTTGGCTCTGACTGTACCACCATCCACT\nACAACTACATGTGTAACAGTTCCTGCATGGGCGGCATGAACCGGAGGCCCATCCTCACCATCATCACACT\nGGAAGACTCCAGTGGTAATCTACTGGGACGGAACAGCTTTGAGGTGCGTGTTTGTGCCTGTCCTGGGAGA\nGACCGGCGCACAGAGGAAGAGAATCTCCGCAAGAAAGGGGAGCCTCACCACGAGCTGCCCCCAGGGAGCA\nCTAAGCGAGCACTGCCCAACAACACCAGCTCCTCTCCCCAGCCAAAGAAGAAACCACTGGATGGAGAATA\nTTTCACCCTTCAGATCCGTGGGCGTGAGCGCTTCGAGATGTTCCGAGAGCTGAATGAGGCCTTGGAACTC\nAAGGATGCCCAGGCTGGGAAGGAGCCAGGGGGGAGCAGGGCTCACTCCAGCCACCTGAAGTCCAAAAAGG\nGTCAGTCTACCTCCCGCCATAAAAAACTCATGTTCAAGACAGAAGGGCCTGACTCAGACTGA",
+      "kind": "numeric",
+      "value": 96.62,
+      "unit": "",
+      "sigma": null,
+      "tolerance": {
+        "abs": 0.05
+      },
+      "regime": "edge",
+      "source": "AlphaFold DB v6 record: https://alphafold.ebi.ac.uk/files/AF-P04637-F1-confidence_v6.json, residue 175 (R175H, c.524G>A on NCBI RefSeq NM_000546.6)",
+      "edge_reason": "derived quantity needing two tool calls (no exact AFDB match for the mutant, so the agent must compare against the wild-type accession)"
+    },
+    {
+      "id": "ddg-p04049-l78a",
+      "question": "What is the experimentally measured folding free-energy change (ddG) of the L78A substitution in UniProt P04049, in kcal/mol, with the convention ddG = dG_unfold(mutant) - dG_unfold(wild type), so that negative means destabilising?",
+      "kind": "numeric",
+      "value": -3.803,
+      "unit": "kcal/mol",
+      "sigma": null,
+      "tolerance": {
+        "abs": 1.36
+      },
+      "regime": "edge",
+      "source": "S669 (Pancotti et al. 2022, Brief. Bioinform. 23, bbab555, doi:10.1093/bib/bbab555), UniProt-numbered file data/s669_uniprot.csv, row P04049 L78A",
+      "sigma_note": "S669 reports no per-variant uncertainty, so no pull is computed",
+      "edge_reason": "needs the AF-ddG model; the Assignment 7 server has no ddG tool, so today's pipeline should fail or answer without a tool call",
+      "s669_protein": "P04049",
+      "s669_mutation": "L78A"
+    },
+    {
+      "id": "ddg-p07737-q139l-kj",
+      "question": "What is the experimentally measured folding free-energy change (ddG) of the Q139L substitution in UniProt P07737, in kJ/mol, with the convention ddG = dG_unfold(mutant) - dG_unfold(wild type), so that negative means destabilising?",
+      "kind": "numeric",
+      "value": 1.82,
+      "unit": "kcal/mol",
+      "sigma": null,
+      "tolerance": {
+        "abs": 1.36
+      },
+      "regime": "edge",
+      "source": "S669 (Pancotti et al. 2022, doi:10.1093/bib/bbab555), data/s669_uniprot.csv, row P07737 Q139L (reference stored in kcal/mol as in the source)",
+      "sigma_note": "S669 reports no per-variant uncertainty, so no pull is computed",
+      "edge_reason": "unit conversion (asked in kJ/mol, reference in kcal/mol) on a stabilising variant, where a sign-convention slip fails the sign rule",
+      "s669_protein": "P07737",
+      "s669_mutation": "Q139L"
+    }
+  ]
+}

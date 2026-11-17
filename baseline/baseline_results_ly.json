@@ -1,0 +1,65 @@
+{
+  "model": "PhysChem-Ridge (sequence-only ridge regression, 10 descriptors)",
+  "train_set": "S2648 (doi:10.1093/bioinformatics/btp445)",
+  "test_set": "S669 direct (doi:10.1093/bib/bbab555)",
+  "test_sha256": "d6e82c53c6554988bdfa0f5cf5e457b421c3bcdc279e3bbf9e5304dddf0efe51",
+  "ridge_alpha": 177.82794100389228,
+  "units": "kcal/mol; ddG<0 destabilising",
+  "baseline": {
+    "rmse_kcal_mol": 1.5380900636053745,
+    "mae_kcal_mol": 1.1329678318508707,
+    "bias_kcal_mol": -0.02380378039161273,
+    "pearson_r": 0.3203034247674229,
+    "spearman_rho": 0.33044056064941835,
+    "n": 669,
+    "rmse_in_RT": 2.5959985381408384,
+    "rmse_kJ_mol": 6.435368826124887
+  },
+  "baseline_rmse_ci95": {
+    "value": 1.5380900636053745,
+    "se": 0.15124168719822598,
+    "ci_low": 1.2721991759780904,
+    "ci_high": 1.8650401338804357,
+    "n_boot": 2000
+  },
+  "null": {
+    "rmse_kcal_mol": 1.622546316626526,
+    "mae_kcal_mol": 1.2255597410573569,
+    "bias_kcal_mol": -0.030689876218732988,
+    "pearson_r": -7.856442394145912e-17,
+    "spearman_rho": NaN,
+    "n": 669,
+    "rmse_in_RT": 2.738544358159876,
+    "rmse_kJ_mol": 6.788733788765385
+  },
+  "delta_rmse_baseline_minus_null": {
+    "delta": -0.08445625302115145,
+    "ci_low": -0.16500237393291894,
+    "ci_high": 0.0015444071755973494,
+    "p_not_better": 0.027
+  },
+  "antisymmetry": {
+    "r_dir_rev": -0.7890036354070539,
+    "delta_kcal_mol": -0.9426061370535296
+  },
+  "conformal_q90_kcal_mol": 2.235308735871866,
+  "conformal_coverage_s669": 0.8878923766816144,
+  "success_threshold_rmse_kcal_mol": 1.36,
+  "verdict": "RMSE = 1.538 kcal/mol vs threshold 1.36 kcal/mol (RT ln10 at 298.15 K): DOES NOT MEET the success threshold",
+  "meeting1_harness_baseline": {
+    "pass rate [all]": 0.7130044843049327,
+    "pass rate [typical] (n=428)": 0.9205607476635514,
+    "pass rate [edge] (n=241)": 0.34439834024896265,
+    "MAE (kcal/mol)": 1.1329678318508707,
+    "worst |error| (kcal/mol)": 6.78888247542892,
+    "worst item": "P54178-W55A"
+  },
+  "meeting1_harness_null": {
+    "pass rate [all]": 0.6711509715994021,
+    "pass rate [typical] (n=428)": 0.9485981308411215,
+    "pass rate [edge] (n=241)": 0.17842323651452283,
+    "MAE (kcal/mol)": 1.2255597410573569,
+    "worst |error| (kcal/mol)": 7.916638972809667,
+    "worst item": "P54178-W55A"
+  }
+}

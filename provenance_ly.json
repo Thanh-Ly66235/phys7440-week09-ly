@@ -1,0 +1,2092 @@
+{
+  "title": "Data provenance for the AF-ΔΔG project (PHYS 7440, Assignment 9)",
+  "author": "Thanh Ly",
+  "pipeline": {
+    "module": "data_pipeline_ly.py",
+    "name": "af-ddg-data-pipeline",
+    "version": "1.0.0",
+    "module_sha256": "c3d8ecab24b0e61be146c9ef023d4c805178b998658d93c8187a5c4eeb3d936f",
+    "command": "python data_pipeline_ly.py --fresh",
+    "run_started_utc": "2026-11-17T04:00:13+00:00",
+    "run_finished_utc": "2026-11-17T04:13:06+00:00",
+    "platform": "Linux-7.3.3-200.fc44.x86_64-x86_64-with-glibc2.43",
+    "packages": {
+      "python": "3.14.10",
+      "httpx": "0.28.1",
+      "tenacity": "9.2.1",
+      "numpy": "2.5.5",
+      "pandas": "3.1.1",
+      "pyarrow": "26.0.1"
+    },
+    "retry_policy": {
+      "library": "tenacity",
+      "max_attempts": 5,
+      "retries": 4,
+      "wait": "exponential 1·2^(n-1) s (HTTP 429: 5·2^(n-1) s), cap 60 s, Retry-After honoured",
+      "retried_on": "timeouts, connection errors, HTTP 429, HTTP 5xx",
+      "politeness": "<= 1 request per 0.25 s per host; interval doubled after HTTP 429 (max 2 s)",
+      "rate_limited_responses_by_host": {
+        "alphafold.ebi.ac.uk": 4
+      },
+      "final_request_interval_s_by_host": {
+        "raw.githubusercontent.com": 0.25,
+        "api.github.com": 0.25,
+        "www.ebi.ac.uk": 0.25,
+        "alphafold.ebi.ac.uk": 2.0,
+        "rest.uniprot.org": 0.25
+      }
+    },
+    "github_commits_api": {
+      "requests": 2,
+      "served_from_cache": 0,
+      "live_requests": 2,
+      "retries": 0,
+      "failed_after_retries": 0,
+      "http_status_counts": {
+        "200": 2
+      },
+      "first_access_utc": "2026-11-17T04:00:14+00:00",
+      "last_access_utc": "2026-11-17T04:00:14+00:00",
+      "responses_sha256": "b2b5659fd6107869bebdd3978ac8aa4b73165fa3ec4c91f48884d4840ded620f"
+    }
+  },
+  "datasets": [
+    {
+      "name": "S669",
+      "role": "test",
+      "type": "file",
+      "source_url": "https://raw.githubusercontent.com/compbiomed-unito/JanusDDG/7ef53fde72c9b9b715b0a9f2f80910ebf927bd59/data/s669_to_process.csv",
+      "repository": "https://github.com/compbiomed-unito/JanusDDG",
+      "commit_pinned_in_url": "7ef53fde72c9b9b715b0a9f2f80910ebf927bd59",
+      "file_last_commit": "01c1a5afe8f2cd28620e4df6ccf340e81f57f45e",
+      "file_last_commit_date": "2025-09-10T15:49:08+02:00",
+      "upstream_latest_commit": {
+        "sha": "01c1a5afe8f2cd28620e4df6ccf340e81f57f45e",
+        "date": "2025-09-10T13:49:08Z",
+        "checked_at_utc": "2026-11-17T04:00:14+00:00",
+        "matches_pinned_file_commit": true
+      },
+      "doi": "10.1093/bib/bbab555",
+      "citation": "Pancotti C. et al. (2022) Brief. Bioinform. 23, bbab555; UniProt-mapped file from JanusDDG (Barducci et al. 2025)",
+      "original_numbering": "UniProt",
+      "access_timestamp_utc": "2026-11-17T04:00:13+00:00",
+      "sha256": "d6e82c53c6554988bdfa0f5cf5e457b421c3bcdc279e3bbf9e5304dddf0efe51",
+      "bytes": 284190,
+      "rows": 669,
+      "served_from_cache": false,
+      "local_copy": "data/raw/s669_uniprot.csv",
+      "transformations": [
+        "downloaded from the commit-pinned raw URL and verified against SHA-256 d6e82c53c6554988bdfa0f5cf5e457b421c3bcdc279e3bbf9e5304dddf0efe51",
+        "ΔΔG unit kcal/mol -> kcal/mol (factor 1); sign checked: 76.1% of variants have ΔΔG < 0, i.e. negative = destabilising, no flip applied",
+        "IDs cleaned: mutation suffix removed ('P04517WTE2143G' -> 'P04517'); PDB-only chains get uniprot_accession = MISSING",
+        "wild type checked against the file's UniProt sequence column and against the current UniProt sequence from AlphaFold DB",
+        "pH and temperature are not in this file -> sentinel -1",
+        "joined with AlphaFold DB v6 features on (UniProt accession, UniProt position)",
+        "669 rows written to data/processed/variants_ly.parquet"
+      ]
+    },
+    {
+      "name": "S2648",
+      "role": "train",
+      "type": "file",
+      "source_url": "https://raw.githubusercontent.com/protddg-bench/protddg-bench.github.io/72a5f300ca0f5076f7f6c644d58c2f7040e021ad/data/s2648.csv",
+      "repository": "https://github.com/protddg-bench/protddg-bench.github.io",
+      "commit_pinned_in_url": "72a5f300ca0f5076f7f6c644d58c2f7040e021ad",
+      "file_last_commit": "56c4e1d54b5176cf26a1738bff0e731650e394bb",
+      "file_last_commit_date": "2020-07-14T00:36:55+02:00",
+      "upstream_latest_commit": {
+        "sha": "56c4e1d54b5176cf26a1738bff0e731650e394bb",
+        "date": "2020-07-13T22:36:55Z",
+        "checked_at_utc": "2026-11-17T04:00:14+00:00",
+        "matches_pinned_file_commit": true
+      },
+      "doi": "10.1093/bioinformatics/btp445",
+      "citation": "Dehouck Y. et al. (2009) Bioinformatics 25, 2537 (protddg-bench release)",
+      "original_numbering": "PDB author numbering",
+      "access_timestamp_utc": "2026-11-17T04:00:14+00:00",
+      "sha256": "e708b274574b02d8cc0b39efc0f09b6180ae211c714306ec05c685c86b55766c",
+      "bytes": 92590,
+      "rows": 2648,
+      "served_from_cache": false,
+      "local_copy": "data/raw/s2648.csv",
+      "transformations": [
+        "downloaded from the commit-pinned raw URL and verified against SHA-256 e708b274574b02d8cc0b39efc0f09b6180ae211c714306ec05c685c86b55766c",
+        "ΔΔG unit kcal/mol -> kcal/mol (factor 1); sign checked: 77.3% of variants have ΔΔG < 0, i.e. negative = destabilising, no flip applied",
+        "temperature converted from °C to K (+273.15)",
+        "PDB author numbering mapped to UniProt numbering with PDBe SIFTS segments, validated against the UniProt sequence, with a chain-wide offset vote as fallback (column numbering_map)",
+        "joined with AlphaFold DB v6 features on (UniProt accession, UniProt position)",
+        "2648 rows written to data/processed/variants_ly.parquet"
+      ]
+    },
+    {
+      "name": "PDBe SIFTS mappings",
+      "role": "identifier normalisation of S2648 (PDB chain -> UniProt accession and numbering)",
+      "type": "API",
+      "endpoint": "https://www.ebi.ac.uk/pdbe/api/mappings/uniprot/{pdb_id} (fallback: https://www.ebi.ac.uk/pdbe/graph-api/mappings/uniprot/{pdb_id})",
+      "version": "SIFTS through the live PDBe API (no release number exposed); fingerprinted by responses_sha256",
+      "requests": 134,
+      "served_from_cache": 0,
+      "live_requests": 134,
+      "retries": 0,
+      "failed_after_retries": 0,
+      "http_status_counts": {
+        "200": 128,
+        "404": 6
+      },
+      "first_access_utc": "2026-11-17T04:00:15+00:00",
+      "last_access_utc": "2026-11-17T04:00:49+00:00",
+      "responses_sha256": "a1a92c67adb9776213ad79e940f53a2339a20991ba77e27f26123f7d5e2285b6",
+      "transformations": [
+        "chain selected by author chain ID (fallback: label asym ID)",
+        "segment offset unp_start - author_start applied to the author residue number",
+        "wild type validated against the UniProt sequence; chain-wide offset vote when >= 3 sites and >= 80% agree",
+        "insertion-code residues left unmapped (sentinel)"
+      ]
+    },
+    {
+      "name": "AlphaFold DB prediction API",
+      "role": "model metadata and reference UniProt sequence",
+      "type": "API",
+      "endpoint": "https://alphafold.ebi.ac.uk/api/prediction/{accession}",
+      "version": "AlphaFold DB; model versions seen: 1, 6; files pinned to v6",
+      "requests": 209,
+      "served_from_cache": 0,
+      "live_requests": 209,
+      "retries": 0,
+      "failed_after_retries": 0,
+      "http_status_counts": {
+        "200": 196,
+        "404": 13
+      },
+      "first_access_utc": "2026-11-17T04:00:49+00:00",
+      "last_access_utc": "2026-11-17T04:01:45+00:00",
+      "responses_sha256": "751673ff039179b3be8ca0fc985a2fc25ec99ff80af31cee1a99d855ca9cc77a",
+      "transformations": [
+        "record chosen as in Assignment 7: exact accession, GDM provider, F1 fragment, monomer, newest version",
+        "uniprotSequence used to validate residue numbering"
+      ],
+      "models": [
+        {
+          "accession": "A0A2V3DW99",
+          "entry_id": "AF-A0A2V3DW99-F1",
+          "latest_version": 6,
+          "model_created": "2022-06-01T00:00:00Z",
+          "sequence_checksum": "d1873d806633efae05697d2ed1e65768",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "A2IC68",
+          "entry_id": "AF-A2IC68-F1",
+          "latest_version": 6,
+          "model_created": "2022-06-01T00:00:00Z",
+          "sequence_checksum": "d42a0f31e00383948cb6bc3a74dc45be",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "E0WVU4",
+          "entry_id": "AF-E0WVU4-F1",
+          "latest_version": 6,
+          "model_created": "2022-06-01T00:00:00Z",
+          "sequence_checksum": "b477a0ba92fd6caffd438473650765a6",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "O15553",
+          "entry_id": "AF-O15553-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "23f0bf62343b85ac1b059853991f06a6",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "O34627",
+          "entry_id": "AF-O34627-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "5a58cc358d2b372a345e56d461edd577",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "O43353",
+          "entry_id": "AF-O43353-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "9fab357664bcb6aaf6d68320f38ad955",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "O60885",
+          "entry_id": "AF-O60885-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "8dbafa77ef94052d86515e8d7fe1a6f3",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "O66523",
+          "entry_id": "AF-O66523-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "8cf84d66dcb25326a40d03ebbee85a87",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "O73951",
+          "entry_id": "AF-O73951-F1",
+          "latest_version": 6,
+          "model_created": "2022-06-01T00:00:00Z",
+          "sequence_checksum": "57f0c750a81d36229fa231991b82905b",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "O74035",
+          "entry_id": "AF-O74035-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "b978eefd8a09a8f179c9974b2319f77f",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "O75400",
+          "entry_id": "AF-O75400-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "51a9a8ddf1f320890129e64455440249",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P00149",
+          "entry_id": "AF-P00149-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "6fdb93f493db4c76ef77906c23189ce6",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P00173",
+          "entry_id": "AF-P00173-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "9695b721e65db2e6a625d0b882912240",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P00268",
+          "entry_id": "AF-P00268-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "d37678681e30be96b923261a20c9f263",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P00282",
+          "entry_id": "AF-P00282-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "fa752ba998c90bd70d52744650d0cdd2",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P00441",
+          "entry_id": "AF-P00441-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "a25927aaa0d8ba452e707aa9b1b9a977",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P00509",
+          "entry_id": "AF-P00509-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "378fb80b3f4935dbe3a309d2cca355f1",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P00560",
+          "entry_id": "AF-P00560-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "cffc69a9dc5fab34d6068edd98382abc",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P00592",
+          "entry_id": "AF-P00592-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "8b2bb12d8666dc193a028a994c0fb4c7",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P00593",
+          "entry_id": "AF-P00593-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "3dccb1ab1153ad7535a4aabb2dd03b6e",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P00644",
+          "entry_id": "AF-P00644-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "92473338afedaa7ddcf142b2b918c838",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P00648",
+          "entry_id": "AF-P00648-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "9f63cae9b110988ecc511713c70021fa",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P00651",
+          "entry_id": "AF-P00651-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "3403e0072fd542cd2e7606d5570b0ef2",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P00698",
+          "entry_id": "AF-P00698-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "e485279d5bf21caa3b7967c566c68a5a",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P00711",
+          "entry_id": "AF-P00711-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "e5f02283a0374d5f338f1ef64bf563f2",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P00712",
+          "entry_id": "AF-P00712-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "a4fc37116ff13dac6e0818ed451ec8f1",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P00750",
+          "entry_id": "AF-P00750-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "e7908c448c709fe31de79c7631f67bb5",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P00782",
+          "entry_id": "AF-P00782-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "8dcf3c56cdf4cd47e73688dbda3bfabc",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P00805",
+          "entry_id": "AF-P00805-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "17d3560c19d38141b1e2c20ba87599ce",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P00807",
+          "entry_id": "AF-P00807-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "e8251b5dc9ccb015bfb1a814e13f4e43",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P00811",
+          "entry_id": "AF-P00811-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "0eccaf784fe93dfc9c1af8dd4a22bc94",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P00818",
+          "entry_id": "AF-P00818-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "383cb4d765b38a9d2e8830db4d425a2f",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P00918",
+          "entry_id": "AF-P00918-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "94eb709966e01fbc15dc1c46a0d03ac5",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P00929",
+          "entry_id": "AF-P00929-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "0e04fade450a2d3e21ee055bbbcc7787",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P00952",
+          "entry_id": "AF-P00952-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "fa8ae8a51e5c71ecd4f7306fe53e2fc0",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P00974",
+          "entry_id": "AF-P00974-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "e38737825dc662c4b3aa0a2676765595",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P01006",
+          "entry_id": "AF-P01006-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "ab3e155cfc6377bc1398eaa91e7ed714",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P01009",
+          "entry_id": "AF-P01009-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "2f600757c70cfcd2a1fa45463df654ce",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P01051",
+          "entry_id": "AF-P01051-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "a2be57aa7d0f1a52950c8c0e257b019f",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P01053",
+          "entry_id": "AF-P01053-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "6b14f820d0a5b9be401920de76f87c27",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P01133",
+          "entry_id": "AF-P01133-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "fc76ad916a9b87ea6db6e57b20f424f3",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P01241",
+          "entry_id": "AF-P01241-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "3b425fc2678bc11f10e944034b19f70e",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P01308",
+          "entry_id": "AF-P01308-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "12e9c9e4e2835c302e8ba615115edda3",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P01584",
+          "entry_id": "AF-P01584-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "148ea68171ceac60d17423458e3a63cd",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P02185",
+          "entry_id": "AF-P02185-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "5c8d987a67857ceb0d32ddcde087b2e4",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P02417",
+          "entry_id": "AF-P02417-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "987bd05527b0118dcf02c2806fb2ff2c",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P02625",
+          "entry_id": "AF-P02625-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "8e79263defdfebcc5a5c20bd3dfc2092",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P02633",
+          "entry_id": "AF-P02633-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "7a1f42b69d22cc780e91e6a775aaf2ae",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P02640",
+          "entry_id": "AF-P02640-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "aef02d8a1c1b271ba22d1b4c22e2deab",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P02654",
+          "entry_id": "AF-P02654-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "39150ed487fded84623d446301619069",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P02693",
+          "entry_id": "AF-P02693-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "5bf2249ade8ff4ff1e276d3619a396ef",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P02751",
+          "entry_id": "AF-P02751-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "27ea99f6f094b658eee07b40b09c5169",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P02754",
+          "entry_id": "AF-P02754-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "53418d25489eef6015dcd5078c66be35",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P02882",
+          "entry_id": "AF-P02882-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "a4f54cd56d65c218389151d278903746",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P02925",
+          "entry_id": "AF-P02925-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "c907cf8fadfa1c36047887a02c27fd25",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P03023",
+          "entry_id": "AF-P03023-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "228e7a41278dfe231a49f0de7c32ff11",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P03051",
+          "entry_id": "AF-P03051-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "1c9c3b56bf1daf30a9c9d546a28f75e1",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P03069",
+          "entry_id": "AF-P03069-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "b51b08829060cefbcf489a10b771a7cd",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P03322",
+          "entry_id": "AF-0000000365763033",
+          "latest_version": 1,
+          "model_created": "2025-07-03T00:00:00Z",
+          "sequence_checksum": "fed14450c2c43f942a7e98607191bc3d",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P03372",
+          "entry_id": "AF-P03372-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "b08a72ec79d891a74e52c22d6fa213bc",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P04049",
+          "entry_id": "AF-P04049-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "d231d020cb5d921e3a7c5bbe10089245",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P04080",
+          "entry_id": "AF-P04080-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "23b3749bcee262a40d627295d298216a",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P04179",
+          "entry_id": "AF-P04179-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "0524edd433c120259f6411f0a05d6306",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P04271",
+          "entry_id": "AF-P04271-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "4361b75531798b65a8a8471278874689",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P04637",
+          "entry_id": "AF-P04637-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "c133dfce69f606f20865e9008199f852",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P04925",
+          "entry_id": "AF-P04925-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "037dba2e73e28222489119aee76f5546",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P05112",
+          "entry_id": "AF-P05112-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "cfeb52156e0b4a73bd2b266f8b92ffd1",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P05230",
+          "entry_id": "AF-P05230-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "d6f2ba560481caf9deba0bc4c8f12519",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P05413",
+          "entry_id": "AF-P05413-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "ceb8ec8dcaaf5032489311e09cefe05e",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P05798",
+          "entry_id": "AF-P05798-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "53488c4307dbe052f6706504ee6c5a5c",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P06213",
+          "entry_id": "AF-P06213-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "8eb04104be33f0a0cb376ed145e684ff",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P06241",
+          "entry_id": "AF-P06241-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "a4554222869c00fd751dc364e23f6a4d",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P06312",
+          "entry_id": "AF-P06312-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "3438a70cb2317563ec18a9bf556acbe2",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P06396",
+          "entry_id": "AF-P06396-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "5e6a75447ea1710e8642d7154d8680fd",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P06536",
+          "entry_id": "AF-P06536-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "1f2ed8d19a58c99ad76c84d502e3a3b6",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P06654",
+          "entry_id": "AF-P06654-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "97e0555dbb4909f920828870e5a37fed",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P06876",
+          "entry_id": "AF-P06876-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "466594274054348677a48e6652ca2907",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P07107",
+          "entry_id": "AF-P07107-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "7f8f827ab08ae1bbfcaae29875472f5a",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P07170",
+          "entry_id": "AF-P07170-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "01c904d46e329ce26a72291aabe60bad",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P07320",
+          "entry_id": "AF-P07320-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "26c1eae634a99139d69af167d3f9ea37",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P07445",
+          "entry_id": "AF-P07445-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "eb16b5f2812af4759f3eec8af7a9874a",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P07737",
+          "entry_id": "AF-P07737-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "e22c93d262030caa39864706482a23e0",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P07739",
+          "entry_id": "AF-P07739-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "8e63a6b48f5cb760cce3301f45623d23",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P07740",
+          "entry_id": "AF-P07740-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "3478053ea12eedbef42394efd0218fee",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P07751",
+          "entry_id": "AF-P07751-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "ef663f08e11dc7a20ab88b72b767b149",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P07830",
+          "entry_id": "AF-P07830-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "91fb4d9e0a9bad8bead164a9f38f1da9",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P07845",
+          "entry_id": "AF-P07845-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "8875095ae23b9603aaf87549b4f7433a",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P08659",
+          "entry_id": "AF-P08659-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "3636d37fc6f9f533ddbd7089c0cc755c",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P08877",
+          "entry_id": "AF-P08877-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "84702c5692d3eb35ff694687624db347",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P09012",
+          "entry_id": "AF-P09012-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "c84e960c28fb67dd430745d1d80c9cfc",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P09167",
+          "entry_id": "AF-P09167-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "9f1fb7c5761d593dd9b40d6ad13a2c02",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P09919",
+          "entry_id": "AF-P09919-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "7fb062b61a2004fb9e0f911d66ff4daa",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P0A3C7",
+          "entry_id": "AF-P0A3C7-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "f8b864c6f87e6ba5dd0e9a879438bc0c",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P0A3E0",
+          "entry_id": "AF-P0A3E0-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "0a42e6336e6611dfbdc53c7789492599",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P0A3H0",
+          "entry_id": "AF-P0A3H0-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "00b5493508c955160b0765903e1262f5",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P0A6F9",
+          "entry_id": "AF-P0A6F9-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "14aed608b903e87469e861e7f4f44d91",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P0A6R3",
+          "entry_id": "AF-P0A6R3-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "e9ff87b2f6cbc07850e519f60813e1f6",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P0A780",
+          "entry_id": "AF-P0A780-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "ab94b0fdca273702d5dd8594481ef496",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P0A7Y4",
+          "entry_id": "AF-P0A7Y4-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "baa389b877a7f741a38376cf573ddbda",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P0A877",
+          "entry_id": "AF-P0A877-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "1f1188d5fb1c600b0f1c9e3dd8f05eb8",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P0A9D2",
+          "entry_id": "AF-P0A9D2-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "d76a3d3965661b7f68059d8501c00579",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P0A9X9",
+          "entry_id": "AF-P0A9X9-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "40785a8282413070fe126dfd41e458ff",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P0AA04",
+          "entry_id": "AF-P0AA04-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "30f33c2d8de065a355696e4e16a20b30",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P0AA25",
+          "entry_id": "AF-P0AA25-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "850143d49315e8891aad60bd107000ef",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P0ABQ4",
+          "entry_id": "AF-P0ABQ4-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "ce7c49af8b85e648e2e76cb6d1771f09",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P0ACJ8",
+          "entry_id": "AF-P0ACJ8-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "9a58754a5c561c0784b75360a962f090",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P0ACT4",
+          "entry_id": "AF-P0ACT4-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "a1b78bf1da02a669460d250b9e2860a5",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P0AE67",
+          "entry_id": "AF-P0AE67-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "308c2c704e7f4631f2bcb6223796b8cb",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P0AEG4",
+          "entry_id": "AF-P0AEG4-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "448e34c14fd2dd95f0789642f7347452",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P0AEX9",
+          "entry_id": "AF-P0AEX9-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "cce42a1bc3dba537c63b008bbf8fb026",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P0CG48",
+          "entry_id": "AF-P0CG48-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "63210f385305542b5e9a895d4fe2babb",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P0CG63",
+          "entry_id": "AF-P0CG63-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "278af8991c26dfb8c0a3a4b9eb6bec43",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P10762",
+          "entry_id": "AF-P10762-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "f8b0bbf1fc89fc3e4b0bc9d8934e2f87",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P11053",
+          "entry_id": "AF-P11053-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "8c189c242b25ef8651578dcfe31a67b0",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P11309",
+          "entry_id": "AF-P11309-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "c582c69ffff7870860548bdfd83e30d0",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P11532",
+          "entry_id": "AF-P11532-9-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "9b5b55eae604728655431994ee402a42",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P11540",
+          "entry_id": "AF-P11540-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "80b7ab517fad4b1159073bff23bda7ce",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P11961",
+          "entry_id": "AF-P11961-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "ec121b2e15f7d0b8d171446a6f923097",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P12376",
+          "entry_id": "AF-P12376-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "eed9b508b42c91ab9be0750872a4a994",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P13123",
+          "entry_id": "AF-P13123-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "9dc0b9b900d897d649ac8cecc3d560a5",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P13444",
+          "entry_id": "AF-P13444-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "ef0ba7276cb1f72d43d74994388851d2",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P13479",
+          "entry_id": "AF-P13479-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "3954adedb56e5a1614412983a4d76f26",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P13726",
+          "entry_id": "AF-P13726-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "5a0c5594ba4c554394765516c0277628",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P15891",
+          "entry_id": "AF-P15891-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "3def9b50f15f21285b58c3688089a117",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P18429",
+          "entry_id": "AF-P18429-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "a127470ab17ed84dbb3556dad36b8a89",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P19267",
+          "entry_id": "AF-P19267-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "9a3c7889d21127ae0f5da5924166daf2",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P19614",
+          "entry_id": "AF-P19614-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "fc5b029ae811fa39fd5b93a71248960f",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P22069",
+          "entry_id": "AF-P22069-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "4a11af991583fdc2d276d86f8a449d45",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P22307",
+          "entry_id": "AF-P22307-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "195be85879289164b40ec040ca15d5d9",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P22505",
+          "entry_id": "AF-P22505-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "f21327174a0a7f5587015e37b761145f",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P23370",
+          "entry_id": "AF-P23370-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "6c6be751364b06118c23225ea46cc794",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P24821",
+          "entry_id": "AF-P24821-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "e8427bf5a0779eca20887e59e5e98982",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P25440",
+          "entry_id": "AF-P25440-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "5dd925de15997e9e3938ab23517cdcfc",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P29160",
+          "entry_id": "AF-P29160-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "c486a999f53c361ca2a1d02475fa119d",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P29768",
+          "entry_id": "AF-P29768-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "bae810574ee198037c5a7cac591449d7",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P30289",
+          "entry_id": "AF-P30289-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "bad5419fb9468ccc33a4909b66704d7b",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P32081",
+          "entry_id": "AF-P32081-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "4fdcb1e5b771bbffeb68786372335dec",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P33665",
+          "entry_id": "AF-P33665-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "c402d3b5579e8dbc59058b55d7c074e5",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P35670",
+          "entry_id": "AF-P35670-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "6d36d580ad2cca6a2e8af41201947992",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P37231",
+          "entry_id": "AF-P37231-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "68c3823e954801d5014d82f6acd14907",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P37957",
+          "entry_id": "AF-P37957-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "5003d8cdae76deeb4cce054dfa7a3b04",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P39060",
+          "entry_id": "AF-P39060-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "f76cbc42e3e1271a8716e0e0cf0560b5",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P40040",
+          "entry_id": "AF-P40040-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "78117af8421a33a23ca307835860b46f",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P41016",
+          "entry_id": "AF-P41016-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "b535070694c1a1ecb17d90d98a54f151",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P42771",
+          "entry_id": "AF-P42771-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "1d9e8fc7b766c8862d289edf6d8db368",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P42773",
+          "entry_id": "AF-P42773-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "f87b5cb42cc17554942b9f0e80994e0a",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P45481",
+          "entry_id": "AF-P45481-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "d1f3f2e5ff3e67ce93903ce679bb1d94",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P46937",
+          "entry_id": "AF-P46937-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "ee00c5e5e15f1ce0df80df8f9edd2e73",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P47992",
+          "entry_id": "AF-P47992-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "9ab30898e843c4307e8dd67f6007360e",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P48052",
+          "entry_id": "AF-P48052-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "343fba5904a195ccff975dff3a7b96a5",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P51161",
+          "entry_id": "AF-P51161-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "1173048d50ecbc5d7933257e3447f194",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P51608",
+          "entry_id": "AF-P51608-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "e8ccf04f740923429f5d9b80a1d99517",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P54178",
+          "entry_id": "AF-P54178-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "ba51c0c31966b2c9bf21fa0605f9f763",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P56552",
+          "entry_id": "AF-P56552-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "2453c736d25a50c02b9b86e71a795dd5",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P60174",
+          "entry_id": "AF-P60174-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "a8d44fc2c980a7677a3b54788d0fa323",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P60849",
+          "entry_id": "AF-P60849-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "17c4656cbbd04bd0fb49698e370414e0",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P61024",
+          "entry_id": "AF-P61024-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "9f519c37964061e00a9e9906f774552e",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P61626",
+          "entry_id": "AF-P61626-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "baed7f39f1d852873ad490a51a495fbc",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P61769",
+          "entry_id": "AF-P61769-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "67fb16dca90b73adcaefc336a6190817",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P61823",
+          "entry_id": "AF-P61823-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "61d817d700589fe6c09d7f42ba981097",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P61991",
+          "entry_id": "AF-P61991-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "0d2e4a4313d7cabe7e45a1458c15d046",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P62593",
+          "entry_id": "AF-P62593-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "a57302ca27229fb06a22728ba4bd7aca",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P62942",
+          "entry_id": "AF-P62942-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "8af88f20ee761602589eea279a1c1fe8",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P63159",
+          "entry_id": "AF-P63159-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "3008b7b956e272256e449cf7682c930a",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P69327",
+          "entry_id": "AF-P69327-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "85972c4116f382f588ec4c732a7031b9",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P69441",
+          "entry_id": "AF-P69441-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "19579ce40a7e689d7eafceb415f215e8",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P69797",
+          "entry_id": "AF-P69797-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "c25d69640a5dcceb8df5831ecaa02add",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P78352",
+          "entry_id": "AF-P78352-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "8483ccd490232a3fdeb9e580265a9941",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P80386",
+          "entry_id": "AF-P80386-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "5fb7e306035316dcd1074ff27b709e26",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P81662",
+          "entry_id": "AF-P81662-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "eceff4ad486e7903493a32ed832be287",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P83876",
+          "entry_id": "AF-P83876-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "3ce8f7bac79e3b182f0bb110b508d29e",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "P84131",
+          "entry_id": "AF-P84131-F1",
+          "latest_version": 6,
+          "model_created": "2022-06-01T00:00:00Z",
+          "sequence_checksum": "b013af11961e1437556dc50b70bac728",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P96110",
+          "entry_id": "AF-P96110-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "63330ec3f57bd37d0b17444da4ddc5bf",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "P9WKK7",
+          "entry_id": "AF-P9WKK7-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "98927260a3483192bdead19386b22924",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "Q03026",
+          "entry_id": "AF-Q03026-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "e79b838ea0d203dad017608ba7d7a263",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "Q03689",
+          "entry_id": "AF-Q03689-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "47ab332ece91b9171cb92d2d1c501697",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "Q06525",
+          "entry_id": "AF-Q06525-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "00530f39a4e38c157efe7f85d5138759",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "Q08012",
+          "entry_id": "AF-Q08012-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "bf29ae5a52c6e7d3185a17ee62290d85",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "Q10ST8",
+          "entry_id": "AF-Q10ST8-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "e3dd2ea8b9d35a2094d69ce1fca4a0e6",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "Q12923",
+          "entry_id": "AF-Q12923-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "ba5d121bb5777016fc5cd6b5c2fea453",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "Q15059",
+          "entry_id": "AF-Q15059-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "b946c4c397f75fdd24b1c5acba15efa0",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "Q15561",
+          "entry_id": "AF-Q15561-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "2025db92510ab49208fab5b7bc665c4f",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "Q15562",
+          "entry_id": "AF-Q15562-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "69c49eda9b44795e6ed5aaaa44720680",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "Q15582",
+          "entry_id": "AF-Q15582-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "25482e2e7e165833a423cd22be36de6b",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "Q16595",
+          "entry_id": "AF-Q16595-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "994262904b50b2cfb188d06633a33c32",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "Q53291",
+          "entry_id": "AF-Q53291-F1",
+          "latest_version": 6,
+          "model_created": "2022-06-01T00:00:00Z",
+          "sequence_checksum": "46b94a18d95df0a13b3b62a4e0753de1",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "Q5SIY4",
+          "entry_id": "AF-Q5SIY4-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "38192124e5853f364fd7e85cb8cc558b",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "Q7KIF2",
+          "entry_id": "AF-Q7KIF2-F1",
+          "latest_version": 6,
+          "model_created": "2022-06-01T00:00:00Z",
+          "sequence_checksum": "ed34f1f94e44aef4048528232e9a89db",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "Q8XDZ4",
+          "entry_id": "AF-Q8XDZ4-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "f887b56dca480301e6998f59c27987c0",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "Q97ZL0",
+          "entry_id": "AF-Q97ZL0-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "ee335e01e5e15e40c9fabe1a1ea682c1",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "Q99728",
+          "entry_id": "AF-Q99728-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "f4c13cd6b9a5e2de54c580033277c63a",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "Q9EYL5",
+          "entry_id": "AF-Q9EYL5-F1",
+          "latest_version": 6,
+          "model_created": "2022-06-01T00:00:00Z",
+          "sequence_checksum": "678e5ff5ef79d7eef5e120a1c748fc30",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "Q9GZQ8",
+          "entry_id": "AF-Q9GZQ8-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "3be04e90200bb820a9e8b32188114c7f",
+          "has_alphamissense": true
+        },
+        {
+          "accession": "Q9QZH4",
+          "entry_id": "AF-Q9QZH4-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "3b59935a2c5d188fece35ea85e81920f",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "Q9RA57",
+          "entry_id": "AF-Q9RA57-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "f624af866bbf13e5d3359b7cd7abe9b9",
+          "has_alphamissense": false
+        },
+        {
+          "accession": "Q9UBU9",
+          "entry_id": "AF-Q9UBU9-F1",
+          "latest_version": 6,
+          "model_created": "2025-08-01T00:00:00Z",
+          "sequence_checksum": "e5ee0510d5e5b21769ec2369323734ab",
+          "has_alphamissense": true
+        }
+      ],
+      "accessions_without_model": [
+        "P00720",
+        "P03040",
+        "P03050",
+        "P03706",
+        "P04517",
+        "P12497",
+        "P12528",
+        "P12823",
+        "P26747",
+        "P69168",
+        "P69543",
+        "Q23551",
+        "Q8WZ42"
+      ]
+    },
+    {
+      "name": "AlphaFold DB confidence (pLDDT) files",
+      "role": "per-residue model confidence",
+      "type": "API",
+      "endpoint": "https://alphafold.ebi.ac.uk/files/AF-{accession}-F1-confidence_v6.json",
+      "version": "AlphaFold DB model v6",
+      "requests": 182,
+      "served_from_cache": 0,
+      "live_requests": 182,
+      "retries": 4,
+      "failed_after_retries": 0,
+      "http_status_counts": {
+        "200": 182
+      },
+      "first_access_utc": "2026-11-17T04:01:45+00:00",
+      "last_access_utc": "2026-11-17T04:13:00+00:00",
+      "responses_sha256": "30cec9f14e7d52091867cb3a955244f4dea77a18bc73ee983181d9049f131de7",
+      "transformations": [
+        "pLDDT at the site (2 dp)",
+        "mean pLDDT over ±5 residues (3 dp)"
+      ]
+    },
+    {
+      "name": "AlphaFold DB model coordinates (PDB)",
+      "role": "burial feature",
+      "type": "API",
+      "endpoint": "https://alphafold.ebi.ac.uk/files/AF-{accession}-F1-model_v6.pdb",
+      "version": "AlphaFold DB model v6",
+      "requests": 182,
+      "served_from_cache": 0,
+      "live_requests": 182,
+      "retries": 0,
+      "failed_after_retries": 0,
+      "http_status_counts": {
+        "200": 182
+      },
+      "first_access_utc": "2026-11-17T04:01:46+00:00",
+      "last_access_utc": "2026-11-17T04:13:01+00:00",
+      "responses_sha256": "01f6e45f4951565e267fd0ff824743e51423ebb65581146e02c58de8aaa12fe9",
+      "transformations": [
+        "contact number: Cβ (Cα for Gly) atoms within 10 Å of the site's Cβ"
+      ]
+    },
+    {
+      "name": "AlphaMissense tables (AlphaFold DB)",
+      "role": "variant-effect prior (human proteins only)",
+      "type": "API",
+      "endpoint": "https://alphafold.ebi.ac.uk/files/AF-{accession}-F1-aa-substitutions.csv",
+      "version": "AlphaMissense (Cheng et al. 2023, Science 381, eadg7492) as served by AlphaFold DB; no version number exposed",
+      "requests": 57,
+      "served_from_cache": 0,
+      "live_requests": 57,
+      "retries": 0,
+      "failed_after_retries": 0,
+      "http_status_counts": {
+        "200": 57
+      },
+      "first_access_utc": "2026-11-17T04:01:49+00:00",
+      "last_access_utc": "2026-11-17T04:13:04+00:00",
+      "responses_sha256": "b758ddc26e4b47e5c48017a4ee5e1b0e2378a6ec13bf446e7c025abb866a0164",
+      "transformations": [
+        "pathogenicity of the exact substitution",
+        "class codes LBen/Amb/LPath -> likely_benign/ambiguous/likely_pathogenic",
+        "mean of the 19 substitutions at the site"
+      ]
+    },
+    {
+      "name": "UniProt REST (FASTA)",
+      "role": "fallback reference sequence when AlphaFold DB has no model",
+      "type": "API",
+      "endpoint": "https://rest.uniprot.org/uniprotkb/{accession}.fasta",
+      "version": "UniProtKB release current at the access time",
+      "requests": 13,
+      "served_from_cache": 0,
+      "live_requests": 13,
+      "retries": 0,
+      "failed_after_retries": 0,
+      "http_status_counts": {
+        "200": 13
+      },
+      "first_access_utc": "2026-11-17T04:00:56+00:00",
+      "last_access_utc": "2026-11-17T04:01:43+00:00",
+      "responses_sha256": "1b77763cd5fba452dc28beb1d7376b4144bbf3bb79fe3d3437ff92bfc33fa0a9",
+      "transformations": [
+        "first FASTA record, used only to validate numbering"
+      ]
+    }
+  ],
+  "outputs": {
+    "variants": {
+      "path": "data/processed/variants_ly.parquet",
+      "csv_copy": "data/processed/variants_ly.csv",
+      "rows": 3317,
+      "rows_by_dataset": {
+        "S2648": 2648,
+        "S669": 669
+      },
+      "content_sha256": "19494dbf4f8aa86ff43a90e6e016296c1c86ea41502199ccc6a3f827c61db448",
+      "content_hash_definition": "SHA-256 of df[schema columns].to_csv(index=False, float_format='%.10g', lineterminator='\\n', na_rep='NaN'); rows: S669 then S2648, each in source order",
+      "parquet_file_sha256": "6f740fb5d622479e278006343110b1bfaf6c313d1a30f9ffd9a06069ab766cd4"
+    },
+    "missing_fields": {
+      "path": "data/processed/missing_fields_ly.csv",
+      "events": 11092,
+      "substituted_values_by_field": {
+        "af_entry_id": 401,
+        "af_model_created": 401,
+        "af_model_version": 401,
+        "am_class": 2673,
+        "am_pathogenicity": 2673,
+        "am_position_mean": 2673,
+        "burial_cn10": 401,
+        "mutation_uniprot": 86,
+        "plddt": 401,
+        "plddt_window": 401,
+        "position_uniprot": 86,
+        "rel_position": 401,
+        "uniprot_accession": 53,
+        "wt_check": 39
+      }
+    },
+    "cache": {
+      "path": "data/cache/http_cache_ly.sqlite",
+      "responses": 779
+    },
+    "log": "logs/pipeline_ly.log"
+  },
+  "coverage": {
+    "S2648": {
+      "variants": 2648,
+      "with_uniprot_position": 2567,
+      "wild_type_verified": 2533,
+      "with_alphafold_plddt": 2296,
+      "with_burial": 2296,
+      "with_alphamissense": 454
+    },
+    "S669": {
+      "variants": 669,
+      "with_uniprot_position": 664,
+      "wild_type_verified": 664,
+      "with_alphafold_plddt": 620,
+      "with_burial": 620,
+      "with_alphamissense": 190
+    }
+  },
+  "schema": {
+    "variant_id": {
+      "dtype": "str",
+      "unit": null,
+      "description": "stable ID '<dataset>:<source row, 4 digits>'",
+      "sentinel": null
+    },
+    "dataset": {
+      "dtype": "str",
+      "unit": null,
+      "description": "S669 or S2648",
+      "sentinel": null
+    },
+    "split": {
+      "dtype": "str",
+      "unit": null,
+      "description": "test (S669) or train (S2648)",
+      "sentinel": null
+    },
+    "source_row": {
+      "dtype": "int",
+      "unit": null,
+      "description": "0-based row number in the source file",
+      "sentinel": null
+    },
+    "source_id": {
+      "dtype": "str",
+      "unit": null,
+      "description": "identifier as written in the source (S669 ID column; S2648 PDB_CHAIN)",
+      "sentinel": "MISSING"
+    },
+    "source_mutation": {
+      "dtype": "str",
+      "unit": null,
+      "description": "mutation as written in the source, in source numbering",
+      "sentinel": "MISSING"
+    },
+    "group": {
+      "dtype": "str",
+      "unit": null,
+      "description": "clustering key: S669 protein, S2648 sequence cluster CLID",
+      "sentinel": "MISSING"
+    },
+    "protein": {
+      "dtype": "str",
+      "unit": null,
+      "description": "protein key: cleaned S669 ID, or S2648 PDB_CHAIN",
+      "sentinel": "MISSING"
+    },
+    "uniprot_accession": {
+      "dtype": "str",
+      "unit": null,
+      "description": "UniProt accession of the protein",
+      "sentinel": "MISSING"
+    },
+    "wt": {
+      "dtype": "str",
+      "unit": null,
+      "description": "wild-type residue (one-letter)",
+      "sentinel": "MISSING"
+    },
+    "mt": {
+      "dtype": "str",
+      "unit": null,
+      "description": "mutant residue (one-letter)",
+      "sentinel": "MISSING"
+    },
+    "position_uniprot": {
+      "dtype": "int",
+      "unit": null,
+      "description": "residue number in UniProt numbering",
+      "sentinel": -1
+    },
+    "mutation_uniprot": {
+      "dtype": "str",
+      "unit": null,
+      "description": "mutation in UniProt numbering, e.g. S11A",
+      "sentinel": "MISSING"
+    },
+    "numbering_map": {
+      "dtype": "str",
+      "unit": null,
+      "description": "how the UniProt position was obtained (status column, never a sentinel)",
+      "sentinel": null
+    },
+    "wt_check": {
+      "dtype": "str",
+      "unit": null,
+      "description": "wild type vs reference sequence: match / mismatch / unverified (status column)",
+      "sentinel": null
+    },
+    "ddg_kcal_mol": {
+      "dtype": "float",
+      "unit": "kcal/mol",
+      "description": "ΔΔG = ΔG_unfold(mut) − ΔG_unfold(wt); < 0 destabilising (sentinel NaN)",
+      "sentinel": "NaN"
+    },
+    "ph": {
+      "dtype": "float",
+      "unit": null,
+      "description": "pH of the measurement",
+      "sentinel": -1.0
+    },
+    "temperature_k": {
+      "dtype": "float",
+      "unit": "K",
+      "description": "temperature of the measurement",
+      "sentinel": -1.0
+    },
+    "af_entry_id": {
+      "dtype": "str",
+      "unit": null,
+      "description": "AlphaFold DB entry, e.g. AF-P00149-F1",
+      "sentinel": "MISSING"
+    },
+    "af_model_version": {
+      "dtype": "int",
+      "unit": null,
+      "description": "AlphaFold DB model version (latestVersion of the entry)",
+      "sentinel": -1
+    },
+    "af_model_created": {
+      "dtype": "str",
+      "unit": null,
+      "description": "modelCreatedDate of the AlphaFold DB entry",
+      "sentinel": "MISSING"
+    },
+    "plddt": {
+      "dtype": "float",
+      "unit": "pLDDT (0-100)",
+      "description": "AlphaFold per-residue confidence at the site",
+      "sentinel": -1.0
+    },
+    "plddt_window": {
+      "dtype": "float",
+      "unit": "pLDDT (0-100)",
+      "description": "mean pLDDT over ±5 residues",
+      "sentinel": -1.0
+    },
+    "burial_cn10": {
+      "dtype": "int",
+      "unit": "count",
+      "description": "Cβ atoms (Cα for Gly) within 10 Å of the site's Cβ in the AF model",
+      "sentinel": -1
+    },
+    "rel_position": {
+      "dtype": "float",
+      "unit": "fraction",
+      "description": "position / sequence length",
+      "sentinel": -1.0
+    },
+    "am_pathogenicity": {
+      "dtype": "float",
+      "unit": "probability (0-1)",
+      "description": "AlphaMissense pathogenicity of this exact substitution",
+      "sentinel": -1.0
+    },
+    "am_class": {
+      "dtype": "str",
+      "unit": null,
+      "description": "AlphaMissense class: likely_benign / ambiguous / likely_pathogenic",
+      "sentinel": "MISSING"
+    },
+    "am_position_mean": {
+      "dtype": "float",
+      "unit": "probability (0-1)",
+      "description": "mean AlphaMissense score of the 19 substitutions at the site",
+      "sentinel": -1.0
+    },
+    "missing_fields": {
+      "dtype": "str",
+      "unit": null,
+      "description": "';'-separated list of fields replaced by sentinels ('' if none)",
+      "sentinel": null
+    }
+  },
+  "sentinels": {
+    "float": -1.0,
+    "int": -1,
+    "str": "MISSING",
+    "ddg_kcal_mol": "NaN",
+    "why": "-1 is used only for fields whose real values are never negative (pLDDT 0-100, AlphaMissense 0-1, contact counts >= 0, residue numbers >= 1, pH >= 0, T > 0 K), so it cannot be mistaken for data. ΔΔG uses NaN because -1 kcal/mol is a real ΔΔG. Every substituted field is also listed in the row's 'missing_fields' column and in data/processed/missing_fields_ly.csv with its source URL."
+  },
+  "reproducibility": {
+    "previous_content_sha256": "19494dbf4f8aa86ff43a90e6e016296c1c86ea41502199ccc6a3f827c61db448",
+    "identical_to_previous": true,
+    "differences_from_previous_table": {
+      "rows_only_in_previous": 0,
+      "rows_only_in_new": 0,
+      "changed_values_by_column": {}
+    },
+    "how_to_check": "python data_pipeline_ly.py --fresh (re-downloads everything and compares with the content hash recorded before), then python data_pipeline_ly.py --verify"
+  }
+}
